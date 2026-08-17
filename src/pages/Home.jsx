@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { projects } from '../data/projects';
 
 export default function Home({ onNavigate }) {
   const selectedProjects = projects.slice(0, 4); // Take all 4 styling/modeling projects for the homepage
+  const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const videoRef = useRef(null);
 
   const handleCursorEnter = () => {
     const cursor = document.querySelector('.custom-cursor');
@@ -14,6 +17,25 @@ export default function Home({ onNavigate }) {
     if (cursor) cursor.classList.remove('hovering');
   };
 
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
+    }
+  };
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+        setIsPlaying(true);
+      } else {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+  };
+
   return (
     <div className="page-wrapper">
       {/* Hero Section */}
@@ -21,8 +43,8 @@ export default function Home({ onNavigate }) {
         <div 
           className="border-right mobile-padding" 
           style={{ 
-            gridColumn: 'span 8', 
-            padding: '6rem 4rem', 
+            gridColumn: 'span 7', 
+            padding: '5rem 4rem', 
             display: 'flex', 
             flexDirection: 'column', 
             justifyContent: 'space-between',
@@ -30,58 +52,162 @@ export default function Home({ onNavigate }) {
             overflow: 'hidden'
           }}
         >
-          <div style={{ alignSelf: 'flex-start' }}>
-            <span style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '0.1em', color: 'var(--color-accent)', transition: 'color var(--transition-medium)' }}>
-              UNCLE DODI / EDITORIAL MUSE & CREATIVE DIRECTOR
-            </span>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+              <span className="live-status-pill">
+                <span className="live-dot" /> LIVE REEL ARCHIVE
+              </span>
+              <span className="meta-label">
+                UNCLE DODI / EDITORIAL MUSE
+              </span>
+            </div>
+
+            <div style={{ margin: '2rem 0' }}>
+              <h1 className="display-huge" style={{ margin: 0 }}>
+                THE MUSE<br/>
+                THAT COMMANDS<br/>
+                <span className="text-outline">THE FRAME.</span>
+              </h1>
+            </div>
+
+            <p className="lead-text" style={{ maxWidth: '580px', opacity: 0.9, marginBottom: '2.5rem' }}>
+              Framing African heritage, raw brass statement jewellery, and high-fashion movement in structural, high-contrast visual narratives.
+            </p>
           </div>
 
-          <div style={{ margin: '4rem 0' }}>
-            <h1 className="display-huge" style={{ margin: 0 }}>
-              THE MUSE<br/>
-              THAT COMMANDS<br/>
-              <span className="text-outline">THE FRAME.</span>
-            </h1>
-          </div>
+          <div>
+            <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '3rem' }}>
+              <a 
+                href="#/work" 
+                onClick={(e) => { e.preventDefault(); onNavigate('work'); }}
+                onMouseEnter={handleCursorEnter}
+                onMouseLeave={handleCursorLeave}
+                className="btn-primary"
+                style={{ maxWidth: '280px' }}
+              >
+                EXPLORE CAMPAIGNS ⚡
+              </a>
+              <a 
+                href="https://www.instagram.com/reel/DD_e00iIQmy/?igsh=eTJseHoweHpjZWVs&igsi=eTJseHoweHpjZWVs"
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={handleCursorEnter}
+                onMouseLeave={handleCursorLeave}
+                className="btn-secondary"
+                style={{ maxWidth: '280px' }}
+              >
+                INSTAGRAM REEL ↗
+              </a>
+            </div>
 
-          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-            <a 
-              href="#/work" 
-              onClick={(e) => { e.preventDefault(); onNavigate('work'); }}
-              onMouseEnter={handleCursorEnter}
-              onMouseLeave={handleCursorLeave}
-              className="btn-primary"
-              style={{ maxWidth: '300px' }}
-            >
-              EXPLORE CAMPAIGNS ⚡
-            </a>
+            <div className="hero-stats-row">
+              <div className="hero-stat-item">
+                <span className="stat-number">01</span>
+                <span className="stat-label">EDITORIAL STYLING</span>
+              </div>
+              <div className="hero-stat-item">
+                <span className="stat-number">02</span>
+                <span className="stat-label">RAW BRASS & DRAPING</span>
+              </div>
+              <div className="hero-stat-item">
+                <span className="stat-number">03</span>
+                <span className="stat-label">CAMPAIGN DIRECTION</span>
+              </div>
+            </div>
           </div>
         </div>
 
         <div 
           className="mobile-padding" 
           style={{ 
-            gridColumn: 'span 4', 
-            padding: '4rem', 
+            gridColumn: 'span 5', 
+            padding: '3.5rem 2.5rem', 
             display: 'flex', 
             flexDirection: 'column', 
-            justifyContent: 'space-between',
-            background: 'var(--color-accent)',
-            color: 'var(--bg-dark)',
-            transition: 'background-color var(--transition-slow)'
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: 'var(--bg-dark)',
+            position: 'relative'
           }}
         >
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: '5rem', fontWeight: 800, lineHeight: 0.8, opacity: 0.2 }}>
-            01/04
-          </div>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <h3 style={{ fontSize: '2.5rem', lineHeight: 0.9, color: 'var(--bg-dark)' }}>
-              EDITORIAL<br/>STORYTELLING &<br/>STYLING.
-            </h3>
-            <p style={{ fontSize: '1rem', fontWeight: 600 }}>
-              We frame heritage, draping texture, and raw brass details in structural, high-contrast visual narratives.
-            </p>
+          {/* Live Reel Video Card */}
+          <div className="hero-video-card">
+            <div className="hero-video-wrapper">
+              <video
+                ref={videoRef}
+                src="/assets/hero_video.mp4"
+                poster="/assets/dodi_portrait.jpg"
+                autoPlay
+                loop
+                muted={isMuted}
+                playsInline
+                className="hero-video-media"
+                onClick={togglePlay}
+              />
+              
+              {/* Top Glass Tag */}
+              <div className="hero-video-top-tag">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span className="live-dot-red" />
+                  <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.08em' }}>LIVE / @UNCLE_DODI</span>
+                </div>
+                <div>
+                  <button 
+                    onClick={toggleMute} 
+                    className="video-action-btn"
+                    title={isMuted ? "Unmute Audio" : "Mute Audio"}
+                    aria-label={isMuted ? "Unmute Audio" : "Mute Audio"}
+                  >
+                    {isMuted ? (
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        🔇 UNMUTE
+                      </span>
+                    ) : (
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-accent)' }}>
+                        🔊 SOUND ON
+                        <span className="sound-visualizer">
+                          <span className="sound-bar bar-1"></span>
+                          <span className="sound-bar bar-2"></span>
+                          <span className="sound-bar bar-3"></span>
+                        </span>
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Center Play Overlay when paused */}
+              {!isPlaying && (
+                <button 
+                  className="hero-video-play-overlay" 
+                  onClick={togglePlay}
+                  aria-label="Play video"
+                >
+                  <span>▶</span>
+                </button>
+              )}
+
+              {/* Bottom Info Overlay */}
+              <div className="hero-video-bottom-tag">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--color-accent)' }}>
+                    MOTION & SARTORIAL FORM
+                  </span>
+                  <span style={{ fontSize: '0.75rem', opacity: 0.85, lineHeight: 1.35 }}>
+                    Live styling session featuring handcrafted brass accessories & contemporary vintage silhouette.
+                  </span>
+                </div>
+                <a 
+                  href="https://www.instagram.com/reel/DD_e00iIQmy/?igsh=eTJseHoweHpjZWVs&igsi=eTJseHoweHpjZWVs" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="reel-link-badge"
+                  title="View original reel on Instagram"
+                >
+                  VIEW ON INSTAGRAM ↗
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
