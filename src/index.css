@@ -1,0 +1,392 @@
+/* UNCLE DODI — DESIGN SYSTEM & VARIABLES */
+
+:root {
+  /* Color Palette */
+  --bg-dark: #131110;
+  --bg-light: #F7F5F0;
+  --accent-gold: #C5A059;
+  --accent-terracotta: #C85A32;
+  --accent-sage: #7D8F69;
+  --accent-indigo: #2D3D4E;
+  
+  /* Active states (can be modified dynamically per section) */
+  --color-bg: var(--bg-dark);
+  --color-text: var(--bg-light);
+  --color-accent: var(--accent-gold);
+  --color-border: rgba(247, 245, 240, 0.12);
+  
+  /* Fonts */
+  --font-display: 'Syne', sans-serif;
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  
+  /* Transition timings */
+  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-medium: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  transition: background-color var(--transition-slow), color var(--transition-slow);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border: 2px solid var(--bg-dark);
+}
+
+/* Grid & Border Layout Framework */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  width: 100%;
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--color-border);
+  transition: border-color var(--transition-medium);
+}
+
+.border-top {
+  border-top: 1px solid var(--color-border);
+  transition: border-color var(--transition-medium);
+}
+
+.border-right {
+  border-right: 1px solid var(--color-border);
+  transition: border-color var(--transition-medium);
+}
+
+.border-left {
+  border-left: 1px solid var(--color-border);
+  transition: border-color var(--transition-medium);
+}
+
+/* Typography elements */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+p {
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* Custom Typography Helpers */
+.display-huge {
+  font-size: clamp(4rem, 10vw, 12rem);
+  letter-spacing: -0.05em;
+  line-height: 0.85;
+}
+
+.display-large {
+  font-size: clamp(3rem, 7vw, 7rem);
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+}
+
+.display-medium {
+  font-size: clamp(2rem, 4vw, 4rem);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+}
+
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-text);
+  transition: -webkit-text-stroke var(--transition-medium);
+}
+
+.text-accent {
+  color: var(--color-accent);
+  transition: color var(--transition-medium);
+}
+.lead-text {
+  font-size: clamp(1.25rem, 2vw, 2rem);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+}
+
+/* Serif & Editorial Typography Helpers */
+.font-serif {
+  font-family: var(--font-serif);
+  text-transform: none;
+  font-weight: 400;
+  letter-spacing: normal;
+}
+
+.font-serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  text-transform: none;
+  font-weight: 400;
+  letter-spacing: normal;
+}
+
+.editorial-quote {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 3vw, 2.8rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--color-accent);
+  text-align: left;
+  margin: 1.5rem 0;
+  letter-spacing: -0.01em;
+}
+
+.meta-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  font-family: var(--font-body);
+}
+
+/* Navigation & Interactive Elements */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+
+/* Custom Cursor */
+.custom-cursor {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-accent);
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  transition: width var(--transition-fast), height var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-medium);
+}
+
+.custom-cursor.hovering {
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-accent);
+  mix-blend-mode: difference;
+  border-color: transparent;
+}
+
+/* Marquee / Ticker */
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  width: 100%;
+}
+
+.marquee-content {
+  display: inline-flex;
+  animation: marquee 20s linear infinite;
+  padding: 1.5rem 0;
+}
+
+.marquee-text {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 6rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Color block buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 2.5rem;
+  background-color: var(--color-accent);
+  color: var(--bg-dark);
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  border: 1px solid var(--color-accent);
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  width: 100%;
+  text-align: center;
+}
+
+.btn-primary:hover {
+  background-color: transparent;
+  color: var(--color-text);
+  border-color: var(--color-text);
+}
+
+/* Project Card layout */
+.project-card {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  transition: transform var(--transition-medium);
+}
+
+.project-card-image-wrapper {
+  aspect-ratio: 4/3;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.project-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow), filter var(--transition-medium);
+}
+
+.project-card:hover .project-card-image {
+  transform: scale(1.05);
+}
+
+.project-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-accent);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity var(--transition-medium);
+}
+
+.project-card:hover .project-card-overlay {
+  opacity: 0.7;
+}
+
+.project-card-info {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Dynamic CSS SVG Placeholders for Vortex / ZaZa if images fail */
+.vector-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Page Transition Swipe */
+.transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--accent-cobalt);
+  z-index: 10000;
+  transform: translateY(100%);
+  transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+  pointer-events: none;
+}
+
+.transition-overlay.active {
+  transform: translateY(0);
+}
+
+.transition-overlay.exiting {
+  transform: translateY(-100%);
+}
+
+/* Fade in page content after transition */
+.page-wrapper {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Grid Adjustments */
+@media (max-width: 900px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .border-right, .border-left {
+    border-right: none;
+    border-left: none;
+  }
+  
+  .border-bottom-mobile {
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .mobile-padding {
+    padding: 2rem 1.5rem !important;
+  }
+}
+
+/* Utility Helpers */
+.p-container {
+  padding: 4rem;
+}
+
+@media (max-width: 900px) {
+  .p-container {
+    padding: 2rem 1.5rem;
+  }
+}
