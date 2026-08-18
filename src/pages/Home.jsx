@@ -38,31 +38,83 @@ export default function Home({ onNavigate }) {
 
   return (
     <div className="page-wrapper">
-      {/* Hero Section */}
-      <section className="grid-container border-bottom" style={{ minHeight: 'calc(100vh - 75px)', position: 'relative' }}>
-        <div 
-          className="border-right mobile-padding" 
-          style={{ 
-            gridColumn: 'span 7', 
-            padding: '5rem 4rem', 
-            display: 'flex', 
-            flexDirection: 'column', 
-            justifyContent: 'space-between',
-            position: 'relative',
-            overflow: 'hidden'
-          }}
-        >
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+      {/* Full-Bleed Background Video Hero Section */}
+      <section className="hero-fullbleed-section border-bottom">
+        {/* Background Video Layer */}
+        <div className="hero-bg-video-wrapper">
+          <video
+            ref={videoRef}
+            src="/assets/hero_video.mp4"
+            poster="/assets/dodi_portrait.jpg"
+            autoPlay
+            loop
+            muted={isMuted}
+            playsInline
+            className="hero-bg-video-element"
+          />
+          <div className="hero-bg-overlay-gradient" />
+        </div>
+
+        {/* Foreground Content Layer */}
+        <div className="hero-content-layer">
+          {/* Top Row: Meta Status & Audio / Reel Controls */}
+          <div className="hero-top-row">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
               <span className="live-status-pill">
                 <span className="live-dot" /> LIVE REEL ARCHIVE
               </span>
               <span className="meta-label">
-                UNCLE DODI / EDITORIAL MUSE
+                UNCLE DODI / EDITORIAL MUSE & CREATIVE DIRECTOR
               </span>
             </div>
 
-            <div style={{ margin: '2rem 0' }}>
+            <div className="hero-floating-controls">
+              <button 
+                onClick={togglePlay}
+                className="video-action-btn"
+                title={isPlaying ? "Pause Video" : "Play Video"}
+                aria-label={isPlaying ? "Pause Video" : "Play Video"}
+              >
+                {isPlaying ? "⏸ PAUSE" : "▶ PLAY"}
+              </button>
+
+              <button 
+                onClick={toggleMute} 
+                className="video-action-btn"
+                title={isMuted ? "Unmute Audio" : "Mute Audio"}
+                aria-label={isMuted ? "Unmute Audio" : "Mute Audio"}
+              >
+                {isMuted ? (
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    🔇 UNMUTE
+                  </span>
+                ) : (
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-accent)' }}>
+                    🔊 SOUND ON
+                    <span className="sound-visualizer">
+                      <span className="sound-bar bar-1"></span>
+                      <span className="sound-bar bar-2"></span>
+                      <span className="sound-bar bar-3"></span>
+                    </span>
+                  </span>
+                )}
+              </button>
+
+              <a 
+                href="https://www.instagram.com/reel/DD_e00iIQmy/?igsh=eTJseHoweHpjZWVs&igsi=eTJseHoweHpjZWVs" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="reel-link-badge"
+                title="View on Instagram"
+              >
+                @UNCLE_DODI ↗
+              </a>
+            </div>
+          </div>
+
+          {/* Center Main Headline & Call to Action */}
+          <div className="hero-center-row">
+            <div>
               <h1 className="display-huge" style={{ margin: 0 }}>
                 THE MUSE<br/>
                 THAT COMMANDS<br/>
@@ -70,20 +122,18 @@ export default function Home({ onNavigate }) {
               </h1>
             </div>
 
-            <p className="lead-text" style={{ maxWidth: '580px', opacity: 0.9, marginBottom: '2.5rem' }}>
+            <p className="lead-text" style={{ maxWidth: '680px', opacity: 0.95, textShadow: '0 2px 10px rgba(0,0,0,0.7)' }}>
               Framing African heritage, raw brass statement jewellery, and high-fashion movement in structural, high-contrast visual narratives.
             </p>
-          </div>
 
-          <div>
-            <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap', marginBottom: '3rem' }}>
+            <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap', marginTop: '1rem' }}>
               <a 
                 href="#/work" 
                 onClick={(e) => { e.preventDefault(); onNavigate('work'); }}
                 onMouseEnter={handleCursorEnter}
                 onMouseLeave={handleCursorLeave}
                 className="btn-primary"
-                style={{ maxWidth: '280px' }}
+                style={{ maxWidth: '300px' }}
               >
                 EXPLORE CAMPAIGNS ⚡
               </a>
@@ -94,119 +144,30 @@ export default function Home({ onNavigate }) {
                 onMouseEnter={handleCursorEnter}
                 onMouseLeave={handleCursorLeave}
                 className="btn-secondary"
-                style={{ maxWidth: '280px' }}
+                style={{ maxWidth: '300px', backgroundColor: 'rgba(19, 17, 16, 0.6)', backdropFilter: 'blur(8px)' }}
               >
                 INSTAGRAM REEL ↗
               </a>
             </div>
-
-            <div className="hero-stats-row">
-              <div className="hero-stat-item">
-                <span className="stat-number">01</span>
-                <span className="stat-label">EDITORIAL STYLING</span>
-              </div>
-              <div className="hero-stat-item">
-                <span className="stat-number">02</span>
-                <span className="stat-label">RAW BRASS & DRAPING</span>
-              </div>
-              <div className="hero-stat-item">
-                <span className="stat-number">03</span>
-                <span className="stat-label">CAMPAIGN DIRECTION</span>
-              </div>
-            </div>
           </div>
-        </div>
 
-        <div 
-          className="mobile-padding" 
-          style={{ 
-            gridColumn: 'span 5', 
-            padding: '3.5rem 2.5rem', 
-            display: 'flex', 
-            flexDirection: 'column', 
-            justifyContent: 'center',
-            alignItems: 'center',
-            background: 'var(--bg-dark)',
-            position: 'relative'
-          }}
-        >
-          {/* Live Reel Video Card */}
-          <div className="hero-video-card">
-            <div className="hero-video-wrapper">
-              <video
-                ref={videoRef}
-                src="/assets/hero_video.mp4"
-                poster="/assets/dodi_portrait.jpg"
-                autoPlay
-                loop
-                muted={isMuted}
-                playsInline
-                className="hero-video-media"
-                onClick={togglePlay}
-              />
-              
-              {/* Top Glass Tag */}
-              <div className="hero-video-top-tag">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span className="live-dot-red" />
-                  <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.08em' }}>LIVE / @UNCLE_DODI</span>
-                </div>
-                <div>
-                  <button 
-                    onClick={toggleMute} 
-                    className="video-action-btn"
-                    title={isMuted ? "Unmute Audio" : "Mute Audio"}
-                    aria-label={isMuted ? "Unmute Audio" : "Mute Audio"}
-                  >
-                    {isMuted ? (
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        🔇 UNMUTE
-                      </span>
-                    ) : (
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-accent)' }}>
-                        🔊 SOUND ON
-                        <span className="sound-visualizer">
-                          <span className="sound-bar bar-1"></span>
-                          <span className="sound-bar bar-2"></span>
-                          <span className="sound-bar bar-3"></span>
-                        </span>
-                      </span>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {/* Center Play Overlay when paused */}
-              {!isPlaying && (
-                <button 
-                  className="hero-video-play-overlay" 
-                  onClick={togglePlay}
-                  aria-label="Play video"
-                >
-                  <span>▶</span>
-                </button>
-              )}
-
-              {/* Bottom Info Overlay */}
-              <div className="hero-video-bottom-tag">
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--color-accent)' }}>
-                    MOTION & SARTORIAL FORM
-                  </span>
-                  <span style={{ fontSize: '0.75rem', opacity: 0.85, lineHeight: 1.35 }}>
-                    Live styling session featuring handcrafted brass accessories & contemporary vintage silhouette.
-                  </span>
-                </div>
-                <a 
-                  href="https://www.instagram.com/reel/DD_e00iIQmy/?igsh=eTJseHoweHpjZWVs&igsi=eTJseHoweHpjZWVs" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="reel-link-badge"
-                  title="View original reel on Instagram"
-                >
-                  VIEW ON INSTAGRAM ↗
-                </a>
-              </div>
+          {/* Bottom Grid Bar: Stats & Campaign Highlights */}
+          <div className="hero-bottom-bar">
+            <div className="hero-bottom-item">
+              <span className="stat-number">01</span>
+              <span className="stat-label">EDITORIAL STYLING & MUSE</span>
+            </div>
+            <div className="hero-bottom-item">
+              <span className="stat-number">02</span>
+              <span className="stat-label">RAW BRASS & DRAPING TEXTURES</span>
+            </div>
+            <div className="hero-bottom-item">
+              <span className="stat-number">03</span>
+              <span className="stat-label">HIGH-CONTRAST SARTORIAL DIRECTION</span>
+            </div>
+            <div className="hero-bottom-item">
+              <span className="stat-number">04</span>
+              <span className="stat-label">LIVE NAIROBI CREATIVE ARCHIVE</span>
             </div>
           </div>
         </div>
