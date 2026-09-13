@@ -105,30 +105,48 @@ export default function WorkIndex({ onNavigate }) {
               </div>
 
               {/* Card textual info */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1.5rem' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <span style={{ fontSize: '0.85rem', fontWeight: 700, opacity: 0.5, letterSpacing: '0.05em' }}>
-                    {project.client} ({project.year})
-                  </span>
-                  <h3 style={{ fontSize: '2rem', margin: 0 }}>{project.title}</h3>
-                  <p style={{ opacity: 0.8 }}>{project.deliverable}</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.75rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 700, opacity: 0.6, letterSpacing: '0.05em' }}>
+                        {project.client}
+                      </span>
+                      {project.date && (
+                        <span style={{ fontSize: '0.7rem', fontWeight: 800, padding: '0.15rem 0.45rem', background: 'rgba(255,255,255,0.08)', color: project.accentColor }}>
+                          {project.date}
+                        </span>
+                      )}
+                    </div>
+                    <h3 style={{ fontSize: '2.2rem', margin: 0, lineHeight: 1 }}>{project.title}</h3>
+                    <p style={{ opacity: 0.85, fontSize: '1rem', margin: 0 }}>{project.deliverable}</p>
+                  </div>
+                  
+                  {/* Visual Swatches for project colors */}
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <span 
+                      style={{ width: '1.25rem', height: '1.25rem', backgroundColor: project.accentColor, borderRadius: '50%', border: '1px solid var(--color-border)' }} 
+                      title="Primary Campaign Accent"
+                    />
+                    <span 
+                      style={{ width: '1.25rem', height: '1.25rem', backgroundColor: '#131110', borderRadius: '50%', border: '1px solid var(--color-border)' }} 
+                      title="Deep Charcoal Background"
+                    />
+                  </div>
                 </div>
-                
-                {/* Visual Swatches for project colors */}
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <span 
-                    style={{ width: '1.5rem', height: '1.5rem', backgroundColor: project.accentColor, borderRadius: '50%', border: '1px solid var(--color-border)' }} 
-                    title="Primary Campaign Accent"
-                  />
-                  <span 
-                    style={{ width: '1.5rem', height: '1.5rem', backgroundColor: '#131110', borderRadius: '50%', border: '1px solid var(--color-border)' }} 
-                    title="Deep Charcoal Background"
-                  />
-                  <span 
-                    style={{ width: '1.5rem', height: '1.5rem', backgroundColor: '#F7F5F0', borderRadius: '50%', border: '1px solid var(--color-border)' }} 
-                    title="Warm Ivory Text"
-                  />
-                </div>
+
+                {project.venue && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', opacity: 0.8 }}>
+                    <span style={{ color: project.accentColor }}>📍</span>
+                    <span>{project.venue}</span>
+                  </div>
+                )}
+
+                {project.theme && (
+                  <div style={{ fontSize: '0.85rem', opacity: 0.75, fontStyle: 'italic' }}>
+                    Theme: {project.theme}
+                  </div>
+                )}
               </div>
             </div>
           );

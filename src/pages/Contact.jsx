@@ -89,14 +89,14 @@ export default function Contact() {
             <h3 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>SOCIAL CHANNELS</h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
               <a 
-                href="https://www.instagram.com/uncle_dodi?igsh=eGtzdDgxMzA0MDhq&igsi=eGtzdDgxMzA0MDhq" 
+                href="https://www.instagram.com/uncle_dodi" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 onMouseEnter={handleCursorEnter}
                 onMouseLeave={handleCursorLeave}
                 style={{ padding: '1.5rem', border: '1px solid var(--color-border)', textAlign: 'center', fontWeight: 700 }}
               >
-                INSTAGRAM
+                INSTAGRAM (@UNCLE_DODI)
               </a>
               <a 
                 href="https://linkedin.com" 

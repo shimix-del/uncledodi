@@ -34,14 +34,14 @@ export default function CaseStudy({ projectId, onNavigate }) {
     onNavigate(`project/${nextProject.id}`, nextProject.accentColor);
   };
 
-  // Render unique custom visuals for projects that do not have generated images
+  // Render unique custom visuals for projects
   const renderCustomHeroVisual = () => {
     if (project.heroImage) {
       return (
         <img 
           src={project.heroImage} 
           alt={project.title} 
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 15%' }}
         />
       );
     }
@@ -59,8 +59,38 @@ export default function CaseStudy({ projectId, onNavigate }) {
         <img 
           src={project.processImage} 
           alt={`${project.title} process`} 
-          style={{ width: '100%', border: '1px solid var(--color-border)', objectFit: 'cover' }}
+          style={{ width: '100%', border: '1px solid var(--color-border)', objectFit: 'cover', objectPosition: 'center 15%' }}
         />
+      );
+    }
+
+    if (project.id === 'the-likizo-collection') {
+      return (
+        <div style={{ border: '1px solid var(--color-border)', padding: '3rem', background: '#141824', display: 'flex', flexDirection: 'column', gap: '2rem', width: '100%' }}>
+          <span className="meta-label">RUNWAY TEXTURE & YARN PALETTE</span>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+            <div style={{ background: '#3B82F6', height: '100px', padding: '1rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', color: '#FFFFFF' }}>
+              <span style={{ fontWeight: 800, fontSize: '0.75rem' }}>DENIM</span>
+              <span style={{ fontSize: '1.2rem', fontWeight: 800, fontFamily: 'var(--font-display)' }}>COBALT</span>
+            </div>
+            <div style={{ background: '#EF4444', height: '100px', padding: '1rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', color: '#FFFFFF' }}>
+              <span style={{ fontWeight: 800, fontSize: '0.75rem' }}>KNIT STRIPE</span>
+              <span style={{ fontSize: '1.2rem', fontWeight: 800, fontFamily: 'var(--font-display)' }}>CRIMSON</span>
+            </div>
+            <div style={{ background: '#F59E0B', height: '100px', padding: '1rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', color: '#131110' }}>
+              <span style={{ fontWeight: 800, fontSize: '0.75rem' }}>HAND-SPUN</span>
+              <span style={{ fontSize: '1.2rem', fontWeight: 800, fontFamily: 'var(--font-display)' }}>OCHRE</span>
+            </div>
+          </div>
+          <div style={{ padding: '1.5rem', border: '1px dashed rgba(247, 245, 240, 0.2)', textAlign: 'center' }}>
+            <p className="font-serif-italic" style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: 'var(--color-accent)' }}>
+              "Artisanal knits meets structured combat streetwear."
+            </p>
+            <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>
+              Pairing heavy textured knitwear with tactical cargo silhouettes and combat boots under dynamic runway lighting.
+            </p>
+          </div>
+        </div>
       );
     }
 
@@ -203,34 +233,64 @@ export default function CaseStudy({ projectId, onNavigate }) {
         {/* Left Column: Metadata */}
         <div 
           className="border-right mobile-padding border-bottom-mobile" 
-          style={{ gridColumn: 'span 4', padding: '4rem', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}
+          style={{ gridColumn: 'span 4', padding: '4rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}
         >
           <div>
-            <span style={{ opacity: 0.5, display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.5rem' }}>CREATIVE PARTNER</span>
+            <span style={{ opacity: 0.5, display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.4rem' }}>CREATIVE PARTNER</span>
             <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.4rem' }}>{project.client}</span>
           </div>
 
           <div>
-            <span style={{ opacity: 0.5, display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.5rem' }}>ROLE & SERVICE</span>
+            <span style={{ opacity: 0.5, display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.4rem' }}>ROLE & SERVICE</span>
             <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.4rem', lineHeight: 1.1 }}>{project.deliverable}</span>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+          {project.venue && (
             <div>
-              <span style={{ opacity: 0.5, display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.5rem' }}>YEAR</span>
-              <span style={{ fontWeight: 700 }}>{project.year}</span>
+              <span style={{ opacity: 0.5, display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.4rem' }}>VENUE & LOCATION</span>
+              <span style={{ fontWeight: 700, fontSize: '1.1rem', color: project.accentColor }}>{project.venue}</span>
+            </div>
+          )}
+
+          {project.theme && (
+            <div>
+              <span style={{ opacity: 0.5, display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.4rem' }}>CAMPAIGN THEME</span>
+              <span style={{ fontWeight: 600, fontSize: '1rem', lineHeight: 1.4 }}>{project.theme}</span>
+            </div>
+          )}
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            <div>
+              <span style={{ opacity: 0.5, display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.4rem' }}>DATE / YEAR</span>
+              <span style={{ fontWeight: 700 }}>{project.date || project.year}</span>
             </div>
             <div>
-              <span style={{ opacity: 0.5, display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.5rem' }}>TIMELINE</span>
+              <span style={{ opacity: 0.5, display: 'block', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.4rem' }}>TIMELINE</span>
               <span style={{ fontWeight: 700 }}>{project.timeline}</span>
             </div>
           </div>
+
+          {project.instagramLink && (
+            <div style={{ marginTop: '1rem' }}>
+              <a 
+                href={project.instagramLink} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                onMouseEnter={handleCursorEnter}
+                onMouseLeave={handleCursorLeave}
+                className="btn-secondary"
+                style={{ width: '100%', fontSize: '0.95rem', padding: '1rem' }}
+              >
+                INSTAGRAM REEL / POST ↗
+              </a>
+            </div>
+          )}
         </div>
 
-        {/* Right Column: Challenge & Solution */}
+        {/* Right Column: Challenge & Solution + Comments */}
         <div 
           className="mobile-padding" 
-          style={{ gridColumn: 'span 8', padding: '4rem', display: 'flex', flexDirection: 'column', gap: '3rem' }}
+          style={{ gridColumn: 'span 8', padding: '4rem', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}
         >
           <div>
             <h3 style={{ fontSize: '1.8rem', color: project.accentColor, marginBottom: '1rem' }}>THE CAMPAIGN BRIEF</h3>
@@ -238,8 +298,31 @@ export default function CaseStudy({ projectId, onNavigate }) {
           </div>
           <div>
             <h3 style={{ fontSize: '1.8rem', color: 'var(--color-text)', marginBottom: '1rem' }}>THE STYLING SOLUTION</h3>
-            <p style={{ fontSize: '1.1rem', opacity: 0.8 }}>{project.solution}</p>
+            <p style={{ fontSize: '1.1rem', opacity: 0.85, lineHeight: 1.7 }}>{project.solution}</p>
           </div>
+
+          {project.comment && (
+            <div style={{ borderLeft: `3px solid ${project.accentColor}`, padding: '1.5rem 2rem', background: 'rgba(255,255,255,0.03)', marginTop: '1rem' }}>
+              <span className="meta-label" style={{ display: 'block', marginBottom: '0.5rem' }}>EDITORIAL REVIEW & COMMENTS</span>
+              <p className="font-serif-italic" style={{ fontSize: '1.35rem', color: 'var(--bg-light)', margin: 0, lineHeight: 1.5 }}>
+                {project.comment}
+              </p>
+            </div>
+          )}
+
+          {project.features && (
+            <div style={{ marginTop: '0.5rem' }}>
+              <span className="meta-label" style={{ display: 'block', marginBottom: '1rem' }}>KEY FEATURES & STYLING DELIVERABLES</span>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
+                {project.features.map((feat, fIdx) => (
+                  <div key={fIdx} style={{ padding: '1rem', border: '1px solid var(--color-border)', background: 'var(--bg-dark)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <span style={{ color: project.accentColor, fontWeight: 800 }}>⚡</span>
+                    <span style={{ fontSize: '0.95rem', fontWeight: 600 }}>{feat}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

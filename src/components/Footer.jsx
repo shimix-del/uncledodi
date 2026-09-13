@@ -56,25 +56,33 @@ export default function Footer({ onNavigate }) {
         </div>
       </div>
 
-      {/* Massive Email Footer Ticker */}
+      {/* Clean, Full-Width Responsive Email Banner */}
       <div 
         className="border-bottom"
-        style={{ overflow: 'hidden', whiteSpace: 'nowrap', backgroundColor: 'var(--bg-dark)' }}
+        style={{ 
+          backgroundColor: 'var(--bg-dark)',
+          padding: 'clamp(2rem, 3.5vw, 3rem) 1.5rem',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          overflow: 'hidden'
+        }}
       >
         <a 
           href="mailto:booking@uncledodi.com"
           onMouseEnter={handleCursorEnter}
           onMouseLeave={handleCursorLeave}
           style={{ 
-            display: 'block', 
+            display: 'inline-block', 
             fontFamily: 'var(--font-display)', 
-            fontSize: 'clamp(3rem, 11vw, 11rem)', 
+            fontSize: 'clamp(1.3rem, 4.4vw, 4.2rem)', 
             fontWeight: 800, 
             textAlign: 'center', 
-            letterSpacing: '-0.04em',
-            padding: '2rem 0',
-            lineHeight: 0.9,
-            transition: 'color var(--transition-fast)'
+            letterSpacing: '-0.02em',
+            lineHeight: 1.1,
+            transition: 'color var(--transition-fast), transform var(--transition-fast)',
+            maxWidth: '100%'
           }}
           className="text-accent"
         >
@@ -100,8 +108,8 @@ export default function Footer({ onNavigate }) {
         >
           <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.8rem', letterSpacing: '0.1em', opacity: 0.5 }}>CONNECT</span>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontWeight: 600 }}>
-            <a href="https://www.instagram.com/uncle_dodi?igsh=eGtzdDgxMzA0MDhq&igsi=eGtzdDgxMzA0MDhq" target="_blank" rel="noopener noreferrer" className="text-accent-hover" onMouseEnter={handleCursorEnter} onMouseLeave={handleCursorLeave}>INSTAGRAM</a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-accent-hover" onMouseEnter={handleCursorEnter} onMouseLeave={handleCursorLeave}>LINKEDIN</a>
+            <a href="https://www.instagram.com/uncle_dodi" target="_blank" rel="noopener noreferrer" className="text-accent-hover" onMouseEnter={handleCursorEnter} onMouseLeave={handleCursorLeave}>INSTAGRAM (@UNCLE_DODI) ↗</a>
+            <a href="mailto:booking@uncledodi.com" className="text-accent-hover" onMouseEnter={handleCursorEnter} onMouseLeave={handleCursorLeave}>DIRECT EMAIL ↗</a>
           </div>
         </div>
 

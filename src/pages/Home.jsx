@@ -1,10 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { projects } from '../data/projects';
 
 export default function Home({ onNavigate }) {
-  const selectedProjects = projects.slice(0, 4); // Take all 4 styling/modeling projects for the homepage
-  const [isMuted, setIsMuted] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(true);
   const videoRef = useRef(null);
 
   const handleCursorEnter = () => {
@@ -17,30 +14,45 @@ export default function Home({ onNavigate }) {
     if (cursor) cursor.classList.remove('hovering');
   };
 
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(videoRef.current.muted);
-    }
-  };
+  // Video autoplay with sound: attempt unmuted playback; if browser blocks, fallback to muted and unmute on first user interaction
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
 
-  const togglePlay = () => {
-    if (videoRef.current) {
-      if (videoRef.current.paused) {
-        videoRef.current.play();
-        setIsPlaying(true);
-      } else {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      }
+    video.muted = false;
+    const playPromise = video.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Browser prevented unmuted autoplay, play muted first
+        video.muted = true;
+        video.play().catch(() => {});
+
+        // Unmute automatically on first user gesture
+        const unmuteOnUserGesture = () => {
+          if (video) {
+            video.muted = false;
+            video.play().catch(() => {});
+          }
+          window.removeEventListener('click', unmuteOnUserGesture);
+          window.removeEventListener('touchstart', unmuteOnUserGesture);
+          window.removeEventListener('scroll', unmuteOnUserGesture);
+          window.removeEventListener('keydown', unmuteOnUserGesture);
+        };
+
+        window.addEventListener('click', unmuteOnUserGesture, { once: true });
+        window.addEventListener('touchstart', unmuteOnUserGesture, { once: true });
+        window.addEventListener('scroll', unmuteOnUserGesture, { once: true });
+        window.addEventListener('keydown', unmuteOnUserGesture, { once: true });
+      });
     }
-  };
+  }, []);
 
   return (
     <div className="page-wrapper">
-      {/* Full-Bleed Background Video Hero Section */}
+      {/* Full-Bleed Cover Video Hero Section */}
       <section className="hero-fullbleed-section border-bottom">
-        {/* Background Video Layer */}
+        {/* Hero Background Video Layer */}
         <div className="hero-bg-video-wrapper">
           <video
             ref={videoRef}
@@ -48,8 +60,11 @@ export default function Home({ onNavigate }) {
             poster="/assets/dodi_portrait.jpg"
             autoPlay
             loop
-            muted={isMuted}
             playsInline
+            controlsList="nodownload nofullscreen noremoteplayback"
+            disablePictureInPicture
+            disableRemotePlayback
+            onContextMenu={(e) => e.preventDefault()}
             className="hero-bg-video-element"
           />
           <div className="hero-bg-overlay-gradient" />
@@ -57,57 +72,28 @@ export default function Home({ onNavigate }) {
 
         {/* Foreground Content Layer */}
         <div className="hero-content-layer">
-          {/* Top Row: Meta Status & Audio / Reel Controls */}
+          {/* Top Row: Meta Status & Link */}
           <div className="hero-top-row">
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
               <span className="live-status-pill">
-                <span className="live-dot" /> LIVE REEL ARCHIVE
+                <span className="live-dot" /> LIVE COVER REEL
               </span>
               <span className="meta-label">
-                UNCLE DODI / EDITORIAL MUSE & CREATIVE DIRECTOR
+                DODI TOM (UNCLE DODI) / HIGH FASHION MUSE & CREATIVE VISIONARY
               </span>
             </div>
 
-            <div className="hero-floating-controls">
-              <button 
-                onClick={togglePlay}
-                className="video-action-btn"
-                title={isPlaying ? "Pause Video" : "Play Video"}
-                aria-label={isPlaying ? "Pause Video" : "Play Video"}
-              >
-                {isPlaying ? "⏸ PAUSE" : "▶ PLAY"}
-              </button>
-
-              <button 
-                onClick={toggleMute} 
-                className="video-action-btn"
-                title={isMuted ? "Unmute Audio" : "Mute Audio"}
-                aria-label={isMuted ? "Unmute Audio" : "Mute Audio"}
-              >
-                {isMuted ? (
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    🔇 UNMUTE
-                  </span>
-                ) : (
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--color-accent)' }}>
-                    🔊 SOUND ON
-                    <span className="sound-visualizer">
-                      <span className="sound-bar bar-1"></span>
-                      <span className="sound-bar bar-2"></span>
-                      <span className="sound-bar bar-3"></span>
-                    </span>
-                  </span>
-                )}
-              </button>
-
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <a 
-                href="https://www.instagram.com/reel/DD_e00iIQmy/?igsh=eTJseHoweHpjZWVs&igsi=eTJseHoweHpjZWVs" 
+                href="https://www.instagram.com/reel/DSJ1OfJjdqq/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="reel-link-badge"
-                title="View on Instagram"
+                title="Watch Cover Reel on Instagram"
+                onMouseEnter={handleCursorEnter}
+                onMouseLeave={handleCursorLeave}
               >
-                @UNCLE_DODI ↗
+                WATCH ON INSTAGRAM ↗
               </a>
             </div>
           </div>
@@ -115,38 +101,42 @@ export default function Home({ onNavigate }) {
           {/* Center Main Headline & Call to Action */}
           <div className="hero-center-row">
             <div>
-              <h1 className="display-huge" style={{ margin: 0 }}>
-                THE MUSE<br/>
-                THAT COMMANDS<br/>
-                <span className="text-outline">THE FRAME.</span>
+              <div style={{ display: 'inline-block', marginBottom: '0.75rem' }}>
+                <span style={{ fontSize: '0.95rem', fontWeight: 800, letterSpacing: '0.2em', color: 'var(--color-accent)', textTransform: 'uppercase' }}>
+                  ⚡ NORMAL IS BORING ⚡
+                </span>
+              </div>
+              <h1 className="display-huge" style={{ margin: 0, textTransform: 'uppercase' }}>
+                THE MUSE THAT<br/>
+                COMMANDS <span className="text-outline">THE FRAME.</span>
               </h1>
             </div>
 
-            <p className="lead-text" style={{ maxWidth: '680px', opacity: 0.95, textShadow: '0 2px 10px rgba(0,0,0,0.7)' }}>
-              Framing African heritage, raw brass statement jewellery, and high-fashion movement in structural, high-contrast visual narratives.
+            <p className="lead-text" style={{ maxWidth: '720px', opacity: 0.95, textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
+              High-fashion & commercial modeling, androgynous runway presence, and eclectic upcycled sartorial styling. Brightening every space in this section of the Milky Way.
             </p>
 
-            <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap', marginTop: '1rem' }}>
+            <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', flexWrap: 'wrap', marginTop: '0.5rem' }}>
               <a 
                 href="#/work" 
                 onClick={(e) => { e.preventDefault(); onNavigate('work'); }}
                 onMouseEnter={handleCursorEnter}
                 onMouseLeave={handleCursorLeave}
                 className="btn-primary"
-                style={{ maxWidth: '300px' }}
+                style={{ maxWidth: '280px', padding: '1.2rem 2rem' }}
               >
                 EXPLORE CAMPAIGNS ⚡
               </a>
               <a 
-                href="https://www.instagram.com/reel/DD_e00iIQmy/?igsh=eTJseHoweHpjZWVs&igsi=eTJseHoweHpjZWVs"
+                href="https://www.instagram.com/reel/DSJ1OfJjdqq/"
                 target="_blank"
                 rel="noopener noreferrer"
                 onMouseEnter={handleCursorEnter}
                 onMouseLeave={handleCursorLeave}
                 className="btn-secondary"
-                style={{ maxWidth: '300px', backgroundColor: 'rgba(19, 17, 16, 0.6)', backdropFilter: 'blur(8px)' }}
+                style={{ maxWidth: '280px', padding: '1.2rem 2rem', backgroundColor: 'rgba(19, 17, 16, 0.75)', backdropFilter: 'blur(8px)' }}
               >
-                INSTAGRAM REEL ↗
+                FEATURED REEL ↗
               </a>
             </div>
           </div>
@@ -155,19 +145,19 @@ export default function Home({ onNavigate }) {
           <div className="hero-bottom-bar">
             <div className="hero-bottom-item">
               <span className="stat-number">01</span>
-              <span className="stat-label">EDITORIAL STYLING & MUSE</span>
+              <span className="stat-label">ANDROGYNOUS RUNWAY & EDITORIAL MUSE</span>
             </div>
             <div className="hero-bottom-item">
               <span className="stat-number">02</span>
-              <span className="stat-label">RAW BRASS & DRAPING TEXTURES</span>
+              <span className="stat-label">ECLECTIC & UPCYCLED SARTORIAL STYLING</span>
             </div>
             <div className="hero-bottom-item">
               <span className="stat-number">03</span>
-              <span className="stat-label">HIGH-CONTRAST SARTORIAL DIRECTION</span>
+              <span className="stat-label">THE LIKIZO COLLECTION & MALINDI RESORT</span>
             </div>
             <div className="hero-bottom-item">
               <span className="stat-number">04</span>
-              <span className="stat-label">LIVE NAIROBI CREATIVE ARCHIVE</span>
+              <span className="stat-label">TAO EXODUS & NOMADIC DYSTOPIA</span>
             </div>
           </div>
         </div>
@@ -180,7 +170,7 @@ export default function Home({ onNavigate }) {
           style={{ gridColumn: 'span 6', padding: '6rem 4rem', display: 'flex', alignItems: 'center' }}
         >
           <h2 className="display-medium" style={{ margin: 0 }}>
-            HERITAGE<br/>MEETS MODERN<br/><span className="text-accent" style={{ WebkitTextStroke: '1px transparent' }}>LUXURY</span>.
+            NORMAL IS<br/>BORING.<br/><span className="text-accent" style={{ WebkitTextStroke: '1px transparent' }}>EXTRAORDINARY</span><br/>IS EVERYTHING.
           </h2>
         </div>
         <div 
@@ -188,10 +178,10 @@ export default function Home({ onNavigate }) {
           style={{ gridColumn: 'span 6', padding: '6rem 4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '2rem' }}
         >
           <p className="lead-text">
-            I'm Uncle Dodi. I am an editorial model, stylist, and creative muse. I partner with forward-thinking designers and artisans to frame culture and styling as wearable art.
+            I'm Dodi Tom (Uncle Dodi). A passionate creator, high-fashion muse, and eclectic stylist who embraces everything quirky, bold, and unconventional.
           </p>
-          <p style={{ opacity: 0.7, fontSize: '1.1rem' }}>
-            My approach merges heritage storytelling with a bold, contemporary vintage edge. Every pose, fabric fold, and raw brass accent is composed with precision to create visuals that don't just showcase clothing, but command the frame.
+          <p style={{ opacity: 0.85, fontSize: '1.1rem', lineHeight: 1.7 }}>
+            Having turned early teasing for androgynous looks into fuel for fearless artistic expression, I believe a model's purpose is to carry a story and brighten days in this section of the Milky Way. From the runway of The Likizo Collection to the coastal sands of Malindi and the nomadic dystopia of Tao Exodus, every drape, pose, and upcycled accent is crafted to command the frame.
           </p>
         </div>
       </section>
@@ -200,11 +190,11 @@ export default function Home({ onNavigate }) {
       <section className="border-bottom">
         <div className="grid-container border-bottom">
           <div style={{ gridColumn: 'span 12', padding: '2rem 4rem' }}>
-            <span style={{ fontSize: '1.2rem', fontFamily: 'var(--font-display)', fontWeight: 800 }}>SELECTED CAMPAIGNS</span>
+            <span style={{ fontSize: '1.2rem', fontFamily: 'var(--font-display)', fontWeight: 800 }}>SELECTED CAMPAIGNS & SHOWCASES</span>
           </div>
         </div>
 
-        {selectedProjects.map((project, index) => {
+        {projects.map((project, index) => {
           const isEven = index % 2 === 0;
           return (
             <div key={project.id} className="grid-container border-bottom">
@@ -215,22 +205,66 @@ export default function Home({ onNavigate }) {
                     className="border-right mobile-padding border-bottom-mobile" 
                     style={{ gridColumn: 'span 5', padding: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
                   >
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <span style={{ opacity: 0.5, fontWeight: 700, fontSize: '0.9rem' }}>0{index + 1} / EDITORIAL SHOOT</span>
-                      <h3 style={{ fontSize: '3rem', margin: 0 }}>{project.title}</h3>
-                      <p style={{ opacity: 0.8, fontSize: '1.1rem' }}>{project.deliverable}</p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                        <span style={{ opacity: 0.5, fontWeight: 700, fontSize: '0.85rem' }}>0{index + 1} / EDITORIAL CAMPAIGN</span>
+                        {project.date && (
+                          <span style={{ fontSize: '0.75rem', fontWeight: 800, padding: '0.2rem 0.6rem', background: 'rgba(255,255,255,0.08)', color: project.accentColor }}>
+                            {project.date}
+                          </span>
+                        )}
+                      </div>
+
+                      <h3 style={{ fontSize: '2.4rem', margin: 0, lineHeight: 1 }}>{project.title}</h3>
+                      <p style={{ opacity: 0.85, fontSize: '1.1rem', margin: 0 }}>{project.deliverable}</p>
+
+                      {project.venue && (
+                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', opacity: 0.9, fontSize: '0.9rem' }}>
+                          <span style={{ color: project.accentColor }}>📍</span>
+                          <span><strong>Venue:</strong> {project.venue}</span>
+                        </div>
+                      )}
+
+                      {project.theme && (
+                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', opacity: 0.9, fontSize: '0.9rem' }}>
+                          <span style={{ color: project.accentColor }}>⚡</span>
+                          <span><strong>Theme:</strong> {project.theme}</span>
+                        </div>
+                      )}
+
+                      {project.comment && (
+                        <div style={{ borderLeft: `2px solid ${project.accentColor}`, paddingLeft: '1rem', marginTop: '0.5rem' }}>
+                          <p className="font-serif-italic" style={{ fontSize: '1rem', opacity: 0.95, margin: 0 }}>
+                            {project.comment}
+                          </p>
+                        </div>
+                      )}
                     </div>
-                    <div style={{ marginTop: '4rem' }}>
+
+                    <div style={{ marginTop: '2.5rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                       <a 
                         href={`#/project/${project.id}`} 
                         onClick={(e) => { e.preventDefault(); onNavigate(`project/${project.id}`); }}
                         onMouseEnter={handleCursorEnter}
                         onMouseLeave={handleCursorLeave}
                         className="btn-primary"
-                        style={{ display: 'inline-flex', width: 'auto', minWidth: '200px' }}
+                        style={{ display: 'inline-flex', width: 'auto', minWidth: '180px', padding: '1rem 1.8rem', fontSize: '1.1rem' }}
                       >
-                        VIEW DETAILS ⚡
+                        VIEW CAMPAIGN ⚡
                       </a>
+                      {project.instagramLink && (
+                        <a 
+                          href={project.instagramLink} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          onMouseEnter={handleCursorEnter}
+                          onMouseLeave={handleCursorLeave}
+                          className="btn-secondary"
+                          style={{ display: 'inline-flex', width: 'auto', padding: '1rem 1.4rem', fontSize: '0.95rem' }}
+                        >
+                          INSTAGRAM ↗
+                        </a>
+                      )}
                     </div>
                   </div>
                   <div 
@@ -248,9 +282,8 @@ export default function Home({ onNavigate }) {
                         {project.heroImage ? (
                           <img src={project.heroImage} alt={project.title} className="project-card-image" />
                         ) : (
-                          // Fallback Vector designs
-                          <div className="vector-placeholder" style={{ backgroundColor: 'var(--accent-lime)' }}>
-                            <div style={{ color: 'var(--bg-dark)', fontFamily: 'var(--font-display)', fontSize: '4rem', fontWeight: 800 }}>ZURIKA</div>
+                          <div className="vector-placeholder" style={{ backgroundColor: project.accentColor }}>
+                            <div style={{ color: 'var(--bg-dark)', fontFamily: 'var(--font-display)', fontSize: '4rem', fontWeight: 800 }}>{project.title}</div>
                           </div>
                         )}
                         <div className="project-card-overlay"></div>
@@ -275,8 +308,8 @@ export default function Home({ onNavigate }) {
                         {project.heroImage ? (
                           <img src={project.heroImage} alt={project.title} className="project-card-image" />
                         ) : (
-                          <div className="vector-placeholder" style={{ backgroundColor: 'var(--accent-pink)' }}>
-                            <div style={{ color: 'var(--bg-dark)', fontFamily: 'var(--font-display)', fontSize: '4rem', fontWeight: 800 }}>VINTAGE</div>
+                          <div className="vector-placeholder" style={{ backgroundColor: project.accentColor }}>
+                            <div style={{ color: 'var(--bg-dark)', fontFamily: 'var(--font-display)', fontSize: '4rem', fontWeight: 800 }}>{project.title}</div>
                           </div>
                         )}
                         <div className="project-card-overlay"></div>
@@ -287,22 +320,66 @@ export default function Home({ onNavigate }) {
                     className="mobile-padding" 
                     style={{ gridColumn: 'span 5', padding: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
                   >
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <span style={{ opacity: 0.5, fontWeight: 700, fontSize: '0.9rem' }}>0{index + 1} / EDITORIAL SHOOT</span>
-                      <h3 style={{ fontSize: '3rem', margin: 0 }}>{project.title}</h3>
-                      <p style={{ opacity: 0.8, fontSize: '1.1rem' }}>{project.deliverable}</p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                        <span style={{ opacity: 0.5, fontWeight: 700, fontSize: '0.85rem' }}>0{index + 1} / EDITORIAL CAMPAIGN</span>
+                        {project.date && (
+                          <span style={{ fontSize: '0.75rem', fontWeight: 800, padding: '0.2rem 0.6rem', background: 'rgba(255,255,255,0.08)', color: project.accentColor }}>
+                            {project.date}
+                          </span>
+                        )}
+                      </div>
+
+                      <h3 style={{ fontSize: '2.4rem', margin: 0, lineHeight: 1 }}>{project.title}</h3>
+                      <p style={{ opacity: 0.85, fontSize: '1.1rem', margin: 0 }}>{project.deliverable}</p>
+
+                      {project.venue && (
+                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', opacity: 0.9, fontSize: '0.9rem' }}>
+                          <span style={{ color: project.accentColor }}>📍</span>
+                          <span><strong>Venue:</strong> {project.venue}</span>
+                        </div>
+                      )}
+
+                      {project.theme && (
+                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem', opacity: 0.9, fontSize: '0.9rem' }}>
+                          <span style={{ color: project.accentColor }}>⚡</span>
+                          <span><strong>Theme:</strong> {project.theme}</span>
+                        </div>
+                      )}
+
+                      {project.comment && (
+                        <div style={{ borderLeft: `2px solid ${project.accentColor}`, paddingLeft: '1rem', marginTop: '0.5rem' }}>
+                          <p className="font-serif-italic" style={{ fontSize: '1rem', opacity: 0.95, margin: 0 }}>
+                            {project.comment}
+                          </p>
+                        </div>
+                      )}
                     </div>
-                    <div style={{ marginTop: '4rem' }}>
+
+                    <div style={{ marginTop: '2.5rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                       <a 
                         href={`#/project/${project.id}`} 
                         onClick={(e) => { e.preventDefault(); onNavigate(`project/${project.id}`); }}
                         onMouseEnter={handleCursorEnter}
                         onMouseLeave={handleCursorLeave}
                         className="btn-primary"
-                        style={{ display: 'inline-flex', width: 'auto', minWidth: '200px' }}
+                        style={{ display: 'inline-flex', width: 'auto', minWidth: '180px', padding: '1rem 1.8rem', fontSize: '1.1rem' }}
                       >
-                        VIEW DETAILS ⚡
+                        VIEW CAMPAIGN ⚡
                       </a>
+                      {project.instagramLink && (
+                        <a 
+                          href={project.instagramLink} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          onMouseEnter={handleCursorEnter}
+                          onMouseLeave={handleCursorLeave}
+                          className="btn-secondary"
+                          style={{ display: 'inline-flex', width: 'auto', padding: '1rem 1.4rem', fontSize: '0.95rem' }}
+                        >
+                          INSTAGRAM ↗
+                        </a>
+                      )}
                     </div>
                   </div>
                 </>
@@ -317,50 +394,50 @@ export default function Home({ onNavigate }) {
         <div className="marquee-content">
           <div className="marquee-text">EDITORIAL MODELING ⚡</div>
           <div className="marquee-text">SARTORIAL STYLING ⚡</div>
-          <div className="marquee-text">CREATIVE DIRECTION ⚡</div>
-          <div className="marquee-text">RAW BRASS DESIGN ⚡</div>
-          <div className="marquee-text">HERITAGE STORYTELLING ⚡</div>
-          <div className="marquee-text">AFRO VINTAGE ⚡</div>
+          <div className="marquee-text">MALINDI FASHION ⚡</div>
+          <div className="marquee-text">THE LIKIZO COLLECTION ⚡</div>
+          <div className="marquee-text">TAO EXODUS ⚡</div>
+          <div className="marquee-text">POP LEATHER & SUNSET ⚡</div>
           <div className="marquee-text">EDITORIAL MODELING ⚡</div>
           <div className="marquee-text">SARTORIAL STYLING ⚡</div>
-          <div className="marquee-text">CREATIVE DIRECTION ⚡</div>
-          <div className="marquee-text">RAW BRASS DESIGN ⚡</div>
-          <div className="marquee-text">HERITAGE STORYTELLING ⚡</div>
-          <div className="marquee-text">AFRO VINTAGE ⚡</div>
+          <div className="marquee-text">MALINDI FASHION ⚡</div>
+          <div className="marquee-text">THE LIKIZO COLLECTION ⚡</div>
+          <div className="marquee-text">TAO EXODUS ⚡</div>
+          <div className="marquee-text">POP LEATHER & SUNSET ⚡</div>
         </div>
       </section>
 
-      {/* Trust Grid */}
+      {/* Collaborators Grid */}
       <section className="border-bottom">
         <div className="grid-container border-bottom">
           <div style={{ gridColumn: 'span 12', padding: '2rem 4rem' }}>
-            <span style={{ fontSize: '1.2rem', fontFamily: 'var(--font-display)', fontWeight: 800 }}>CREATIVE COLLABORATORS & DESIGNERS</span>
+            <span style={{ fontSize: '1.2rem', fontFamily: 'var(--font-display)', fontWeight: 800 }}>FEATURED CAMPAIGNS & COLLABORATORS</span>
           </div>
         </div>
         <div className="grid-container">
           <div 
             className="border-right border-bottom-mobile mobile-padding" 
-            style={{ gridColumn: 'span 3', padding: '3rem', textAlign: 'center', fontSize: '1.5rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.5 }}
+            style={{ gridColumn: 'span 3', padding: '3rem', textAlign: 'center', fontSize: '1.4rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.8 }}
           >
-            ZURIKA BY WAMBUI
+            THE LIKIZO COLLECTION
           </div>
           <div 
             className="border-right border-bottom-mobile mobile-padding" 
-            style={{ gridColumn: 'span 3', padding: '3rem', textAlign: 'center', fontSize: '1.5rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.5 }}
+            style={{ gridColumn: 'span 3', padding: '3rem', textAlign: 'center', fontSize: '1.4rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.8 }}
           >
-            AFRO-VINTAGE CO.
+            MALINDI FASHION WEEK
           </div>
           <div 
             className="border-right border-bottom-mobile mobile-padding" 
-            style={{ gridColumn: 'span 3', padding: '3rem', textAlign: 'center', fontSize: '1.5rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.5 }}
+            style={{ gridColumn: 'span 3', padding: '3rem', textAlign: 'center', fontSize: '1.4rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.8 }}
           >
-            GAITAN WARDROBE
+            TAO & TAOEXODUS
           </div>
           <div 
             className="mobile-padding" 
-            style={{ gridColumn: 'span 3', padding: '3rem', textAlign: 'center', fontSize: '1.5rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.5 }}
+            style={{ gridColumn: 'span 3', padding: '3rem', textAlign: 'center', fontSize: '1.4rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.8 }}
           >
-            JERALDS PHOTOGRAPHY
+            POP LEATHER EDITORIAL
           </div>
         </div>
       </section>
