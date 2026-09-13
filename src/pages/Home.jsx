@@ -56,8 +56,8 @@ export default function Home({ onNavigate }) {
         <div className="hero-bg-video-wrapper">
           <video
             ref={videoRef}
-            src="/assets/hero_video.mp4"
-            poster="/assets/dodi_portrait.jpg"
+            src="./assets/hero_video.mp4"
+            poster="./assets/dodi_portrait.jpg"
             autoPlay
             loop
             playsInline

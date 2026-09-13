@@ -100,7 +100,7 @@ export default function About() {
           {/* Main Runway Portrait */}
           <div style={{ border: '1px solid var(--color-border)', width: '100%', position: 'relative', overflow: 'hidden' }}>
             <img 
-              src="/assets/dodi_portrait.jpg" 
+              src="./assets/dodi_portrait.jpg" 
               alt="Dodi Tom runway modeling with dreadlocks" 
               style={{ width: '100%', display: 'block', objectFit: 'cover' }}
             />
@@ -114,7 +114,7 @@ export default function About() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div style={{ border: '1px solid var(--color-border)', overflow: 'hidden', position: 'relative' }}>
               <img 
-                src="/assets/tao_exodus_hero.jpg" 
+                src="./assets/tao_exodus_hero.jpg" 
                 alt="Dodi Tom in Tao Exodus knit hood and goggles" 
                 style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }}
               />
@@ -124,7 +124,7 @@ export default function About() {
             </div>
             <div style={{ border: '1px solid var(--color-border)', overflow: 'hidden', position: 'relative' }}>
               <img 
-                src="/assets/tao_exodus_process.jpg" 
+                src="./assets/tao_exodus_process.jpg" 
                 alt="Dodi Tom seated at amphitheater steps" 
                 style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }}
               />
