@@ -69,14 +69,25 @@ export default function Contact() {
         >
           <div>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--color-accent)' }}>DIRECT BOOKINGS</h3>
-            <a 
-              href="mailto:booking@uncledodi.com"
-              onMouseEnter={handleCursorEnter}
-              onMouseLeave={handleCursorLeave}
-              style={{ fontSize: '1.5rem', fontWeight: 800, fontFamily: 'var(--font-display)', textDecoration: 'underline' }}
-            >
-              booking@uncledodi.com
-            </a>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <a 
+                href="mailto:booking@uncledodi.com"
+                onMouseEnter={handleCursorEnter}
+                onMouseLeave={handleCursorLeave}
+                style={{ fontSize: '1.35rem', fontWeight: 800, fontFamily: 'var(--font-display)', textDecoration: 'underline', wordBreak: 'break-all' }}
+              >
+                booking@uncledodi.com
+              </a>
+              <a 
+                href="tel:0715980552"
+                onMouseEnter={handleCursorEnter}
+                onMouseLeave={handleCursorLeave}
+                style={{ fontSize: '1.25rem', fontWeight: 800, fontFamily: 'var(--font-display)', color: 'var(--color-accent, #C5A059)' }}
+              >
+                📞 0715980552
+              </a>
+              <p style={{ opacity: 0.75, fontSize: '0.95rem', margin: 0 }}>📍 Mombasa / Nairobi, Kenya</p>
+            </div>
           </div>
 
           <div>

@@ -210,19 +210,9 @@ export default function CaseStudy({ projectId, onNavigate }) {
   return (
     <div className="page-wrapper">
       {/* Full bleed Hero Image */}
-      <section style={{ height: '70vh', width: '100%', position: 'relative', overflow: 'hidden' }}>
+      <section className="case-study-hero">
         {renderCustomHeroVisual()}
-        <div style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          width: '100%',
-          padding: '4rem',
-          background: 'linear-gradient(to top, rgba(19,17,16,1) 0%, rgba(19,17,16,0.7) 50%, rgba(19,17,16,0) 100%)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '1rem'
-        }} className="p-container">
+        <div className="case-study-hero-overlay p-container">
           <span style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '0.1em', color: project.accentColor }}>CAMPAIGN PROFILE</span>
           <h1 className="display-large" style={{ margin: 0, color: 'var(--bg-light)' }}>{project.title}</h1>
         </div>

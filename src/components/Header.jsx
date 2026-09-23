@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function Header({ currentRoute, onNavigate }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const navItems = [
     { label: "HOME", path: "home" },
     { label: "WORK", path: "work" },
@@ -18,28 +20,29 @@ export default function Header({ currentRoute, onNavigate }) {
     if (cursor) cursor.classList.remove('hovering');
   };
 
+  const handleNavClick = (path) => {
+    setMobileMenuOpen(false);
+    onNavigate(path);
+  };
+
   return (
-    <header className="grid-container border-bottom" style={{ position: 'sticky', top: 0, zIndex: 1000, background: 'var(--color-bg)', transition: 'background-color var(--transition-slow)' }}>
-      <div 
-        className="border-right mobile-padding" 
-        style={{ gridColumn: 'span 4', padding: '1.4rem 2.5rem', display: 'flex', alignItems: 'center' }}
-      >
-        <a 
-          href="#/" 
-          onClick={(e) => { e.preventDefault(); onNavigate('home'); }}
-          onMouseEnter={handleCursorEnter}
-          onMouseLeave={handleCursorLeave}
-          style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '1.75rem', fontWeight: 800, fontFamily: 'var(--font-display)', letterSpacing: '-0.03em' }}
-        >
-          UNCLE DODI<span style={{ color: 'var(--color-accent)', transition: 'color var(--transition-medium)' }}>⚡</span>
-        </a>
-      </div>
-      
-      <div 
-        className="mobile-padding" 
-        style={{ gridColumn: 'span 8', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '0 2.5rem' }}
-      >
-        <nav style={{ display: 'flex', gap: '2.2rem', alignItems: 'center' }}>
+    <header className="site-header border-bottom">
+      <div className="header-inner">
+        {/* Brand Logo */}
+        <div className="header-logo-container">
+          <a 
+            href="#/" 
+            onClick={(e) => { e.preventDefault(); handleNavClick('home'); }}
+            onMouseEnter={handleCursorEnter}
+            onMouseLeave={handleCursorLeave}
+            className="header-logo-link"
+          >
+            UNCLE DODI<span className="text-accent">⚡</span>
+          </a>
+        </div>
+        
+        {/* Desktop Navigation */}
+        <nav className="desktop-nav">
           {navItems.map((item) => {
             const isActive = 
               (item.path === 'home' && (!currentRoute || currentRoute === 'home')) ||
@@ -50,38 +53,70 @@ export default function Header({ currentRoute, onNavigate }) {
               <a
                 key={item.path}
                 href={item.path === 'home' ? '#/' : `#/${item.path}`}
-                onClick={(e) => { e.preventDefault(); onNavigate(item.path); }}
+                onClick={(e) => { e.preventDefault(); handleNavClick(item.path); }}
                 onMouseEnter={handleCursorEnter}
                 onMouseLeave={handleCursorLeave}
-                style={{
-                  fontSize: '0.85rem',
-                  fontWeight: 800,
-                  fontFamily: 'var(--font-display)',
-                  letterSpacing: '0.14em',
-                  color: isActive ? 'var(--color-accent)' : 'inherit',
-                  position: 'relative',
-                  padding: '0.5rem 0',
-                  textTransform: 'uppercase',
-                  transition: 'color var(--transition-fast)'
-                }}
+                className={`nav-link ${isActive ? 'active' : ''}`}
               >
                 {item.label}
-                {isActive && (
-                  <span style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '2px',
-                    backgroundColor: 'var(--color-accent)',
-                    boxShadow: '0 0 8px var(--color-accent)',
-                    transition: 'background-color var(--transition-medium)'
-                  }} />
-                )}
+                {isActive && <span className="nav-active-bar" />}
               </a>
             );
           })}
         </nav>
+
+        {/* Mobile Menu Hamburger Toggle */}
+        <button 
+          type="button"
+          className={`mobile-menu-toggle ${mobileMenuOpen ? 'open' : ''}`}
+          onClick={() => setMobileMenuOpen(prev => !prev)}
+          aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={mobileMenuOpen}
+        >
+          <span className="hamburger-line line-1" />
+          <span className="hamburger-line line-2" />
+          <span className="hamburger-line line-3" />
+        </button>
+      </div>
+
+      {/* Mobile Drawer Menu Overlay */}
+      <div className={`mobile-nav-drawer ${mobileMenuOpen ? 'drawer-open' : ''}`}>
+        <div className="mobile-nav-links">
+          {navItems.map((item) => {
+            const isActive = 
+              (item.path === 'home' && (!currentRoute || currentRoute === 'home')) ||
+              currentRoute === item.path || 
+              (item.path === 'work' && currentRoute?.startsWith('project/'));
+              
+            return (
+              <a
+                key={item.path}
+                href={item.path === 'home' ? '#/' : `#/${item.path}`}
+                onClick={(e) => { e.preventDefault(); handleNavClick(item.path); }}
+                className={`mobile-drawer-link ${isActive ? 'active' : ''}`}
+              >
+                <span>{item.label}</span>
+                {isActive && <span className="mobile-active-dot">⚡</span>}
+              </a>
+            );
+          })}
+        </div>
+
+        {/* Mobile Drawer Footer Contacts */}
+        <div className="mobile-drawer-footer">
+          <div className="mobile-drawer-contact-item">
+            <span className="mobile-drawer-meta">DIRECT INQUIRIES:</span>
+            <a href="tel:0715980552" className="mobile-drawer-contact-val">0715980552</a>
+          </div>
+          <div className="mobile-drawer-contact-item">
+            <span className="mobile-drawer-meta">INSTAGRAM:</span>
+            <a href="https://www.instagram.com/uncle_dodi" target="_blank" rel="noopener noreferrer" className="mobile-drawer-contact-val text-accent">@UNCLE_DODI ↗</a>
+          </div>
+          <div className="mobile-drawer-contact-item">
+            <span className="mobile-drawer-meta">BASE:</span>
+            <span className="mobile-drawer-contact-val">MOMBASA / NAIROBI, KENYA</span>
+          </div>
+        </div>
       </div>
     </header>
   );

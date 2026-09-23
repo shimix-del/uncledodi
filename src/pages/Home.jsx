@@ -463,28 +463,28 @@ export default function Home({ onNavigate }) {
             <span style={{ fontSize: '1.2rem', fontFamily: 'var(--font-display)', fontWeight: 800 }}>FEATURED CAMPAIGNS & COLLABORATORS</span>
           </div>
         </div>
-        <div className="grid-container">
+        <div className="grid-container collaborators-grid">
           <div 
             className="border-right border-bottom-mobile mobile-padding" 
-            style={{ gridColumn: 'span 3', padding: '3rem', textAlign: 'center', fontSize: '1.4rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.8 }}
+            style={{ gridColumn: 'span 3', padding: '3rem 1.5rem', textAlign: 'center', fontSize: '1.25rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.85 }}
           >
             THE LIKIZO COLLECTION
           </div>
           <div 
             className="border-right border-bottom-mobile mobile-padding" 
-            style={{ gridColumn: 'span 3', padding: '3rem', textAlign: 'center', fontSize: '1.4rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.8 }}
+            style={{ gridColumn: 'span 3', padding: '3rem 1.5rem', textAlign: 'center', fontSize: '1.25rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.85 }}
           >
             MALINDI FASHION WEEK
           </div>
           <div 
             className="border-right border-bottom-mobile mobile-padding" 
-            style={{ gridColumn: 'span 3', padding: '3rem', textAlign: 'center', fontSize: '1.4rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.8 }}
+            style={{ gridColumn: 'span 3', padding: '3rem 1.5rem', textAlign: 'center', fontSize: '1.25rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.85 }}
           >
             TAO & TAOEXODUS
           </div>
           <div 
             className="mobile-padding" 
-            style={{ gridColumn: 'span 3', padding: '3rem', textAlign: 'center', fontSize: '1.4rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.8 }}
+            style={{ gridColumn: 'span 3', padding: '3rem 1.5rem', textAlign: 'center', fontSize: '1.25rem', fontWeight: 800, fontFamily: 'var(--font-display)', opacity: 0.85 }}
           >
             POP LEATHER EDITORIAL
           </div>
