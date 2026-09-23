@@ -23,9 +23,9 @@ export default function WorkIndex({ onNavigate }) {
   return (
     <div className="border-bottom page-wrapper">
       {/* Title / Filter Bar */}
-      <section className="grid-container border-bottom">
+      <section className="grid-container border-bottom work-filter-section">
         <div 
-          className="border-right mobile-padding" 
+          className="border-right mobile-padding work-filter-header" 
           style={{ gridColumn: 'span 5', padding: '5rem 4rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
         >
           <span style={{ fontSize: '1rem', fontWeight: 800, letterSpacing: '0.1em', color: 'var(--color-accent)' }}>
@@ -35,25 +35,17 @@ export default function WorkIndex({ onNavigate }) {
         </div>
         
         <div 
-          className="mobile-padding" 
+          className="mobile-padding work-filter-buttons" 
           style={{ gridColumn: 'span 7', padding: '5rem 4rem', display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'flex-end', justifyContent: 'flex-end' }}
         >
           {services.map(service => (
             <button
               key={service}
+              type="button"
               onClick={() => setFilter(service)}
               onMouseEnter={handleCursorEnter}
               onMouseLeave={handleCursorLeave}
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontWeight: 800,
-                fontSize: '1.2rem',
-                padding: '0.75rem 1.5rem',
-                border: `2px solid ${filter === service ? 'var(--color-accent)' : 'var(--color-border)'}`,
-                color: filter === service ? 'var(--color-accent)' : 'inherit',
-                backgroundColor: 'transparent',
-                transition: 'border-color var(--transition-fast), color var(--transition-fast)'
-              }}
+              className={`work-filter-btn ${filter === service ? 'active' : ''}`}
             >
               {service}
             </button>
@@ -62,23 +54,13 @@ export default function WorkIndex({ onNavigate }) {
       </section>
 
       {/* Projects Grid */}
-      <section className="grid-container" style={{ minHeight: '500px' }}>
+      <section className="work-projects-grid">
         {filteredProjects.map((project, idx) => {
-          const gridColSpan = idx % 3 === 0 ? 'span 8' : 'span 4';
-          const isSpan8 = gridColSpan === 'span 8';
-          
+          const isLarge = idx % 3 === 0;
           return (
             <div 
               key={project.id}
-              className={`border-right border-bottom mobile-padding`}
-              style={{ 
-                gridColumn: gridColSpan, 
-                padding: '3rem',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                gap: '2rem'
-              }}
+              className={`work-project-card-container ${isLarge ? 'card-large' : 'card-small'} border-bottom border-right`}
             >
               {/* Card visual wrapper */}
               <div 
@@ -88,7 +70,7 @@ export default function WorkIndex({ onNavigate }) {
                 onMouseLeave={handleCursorLeave}
                 style={{ cursor: 'pointer', border: '1px solid var(--color-border)', width: '100%' }}
               >
-                <div className="project-card-image-wrapper" style={{ aspectRatio: isSpan8 ? '16/9' : '4/3' }}>
+                <div className="project-card-image-wrapper">
                   {project.heroImage ? (
                     <img 
                       src={project.heroImage} 
@@ -105,11 +87,11 @@ export default function WorkIndex({ onNavigate }) {
               </div>
 
               {/* Card textual info */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div className="work-project-info">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.75rem' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-                      <span style={{ fontSize: '0.8rem', fontWeight: 700, opacity: 0.6, letterSpacing: '0.05em' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 700, opacity: 0.65, letterSpacing: '0.05em' }}>
                         {project.client}
                       </span>
                       {project.date && (
@@ -118,7 +100,7 @@ export default function WorkIndex({ onNavigate }) {
                         </span>
                       )}
                     </div>
-                    <h3 style={{ fontSize: '2.2rem', margin: 0, lineHeight: 1 }}>{project.title}</h3>
+                    <h3 className="work-project-title">{project.title}</h3>
                     <p style={{ opacity: 0.85, fontSize: '1rem', margin: 0 }}>{project.deliverable}</p>
                   </div>
                   
@@ -136,17 +118,28 @@ export default function WorkIndex({ onNavigate }) {
                 </div>
 
                 {project.venue && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', opacity: 0.8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', opacity: 0.85 }}>
                     <span style={{ color: project.accentColor }}>📍</span>
                     <span>{project.venue}</span>
                   </div>
                 )}
 
                 {project.theme && (
-                  <div style={{ fontSize: '0.85rem', opacity: 0.75, fontStyle: 'italic' }}>
+                  <div style={{ fontSize: '0.85rem', opacity: 0.8, fontStyle: 'italic' }}>
                     Theme: {project.theme}
                   </div>
                 )}
+
+                <div style={{ marginTop: '0.5rem' }}>
+                  <button 
+                    type="button"
+                    onClick={() => onNavigate(`project/${project.id}`)}
+                    className="btn-secondary"
+                    style={{ width: '100%', padding: '0.85rem 1.25rem', fontSize: '0.95rem' }}
+                  >
+                    VIEW CAMPAIGN ⚡
+                  </button>
+                </div>
               </div>
             </div>
           );

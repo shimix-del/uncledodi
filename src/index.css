@@ -679,7 +679,58 @@ button {
   gap: 1rem;
 }
 
+/* Work Projects Grid (Desktop: 12-column masonry grid; Mobile: clean vertical flow) */
+.work-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  width: 100%;
+}
 
+.work-project-card-container {
+  padding: 3.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  box-sizing: border-box;
+}
+
+.work-project-card-container.card-large {
+  grid-column: span 8;
+}
+
+.work-project-card-container.card-small {
+  grid-column: span 4;
+}
+
+.work-project-title {
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  margin: 0;
+  line-height: 1.05;
+}
+
+.work-project-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.work-filter-btn {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--color-border);
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.work-filter-btn:hover,
+.work-filter-btn.active {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
 
 /* Dynamic CSS SVG Placeholders for Vortex / ZaZa if images fail */
 .vector-placeholder {
@@ -956,16 +1007,25 @@ button {
 
   /* Grid Layout collapse */
   .grid-container {
-    grid-template-columns: 1fr;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .grid-container > * {
+    grid-column: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
   
   .border-right, .border-left {
-    border-right: none;
-    border-left: none;
+    border-right: none !important;
+    border-left: none !important;
   }
   
   .border-bottom-mobile {
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border) !important;
   }
   
   .mobile-padding {
@@ -974,6 +1034,42 @@ button {
 
   .p-container {
     padding: 2.5rem 1.25rem !important;
+  }
+
+  /* Work Projects Grid on Mobile */
+  .work-projects-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .work-project-card-container {
+    width: 100% !important;
+    grid-column: unset !important;
+    padding: 2.25rem 1.25rem !important;
+    border-right: none !important;
+    gap: 1.5rem !important;
+  }
+
+  .work-filter-section {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .work-filter-header {
+    padding: 2.5rem 1.25rem 1rem 1.25rem !important;
+    border-right: none !important;
+  }
+
+  .work-filter-buttons {
+    padding: 1rem 1.25rem 2.5rem 1.25rem !important;
+    justify-content: flex-start !important;
+    gap: 0.65rem !important;
+  }
+
+  .work-filter-btn {
+    font-size: 0.95rem !important;
+    padding: 0.6rem 1.1rem !important;
   }
 
   /* Hero Section on Mobile */
@@ -1015,7 +1111,8 @@ button {
   }
 
   .hero-bottom-bar {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
+    display: grid !important;
   }
 
   .hero-bottom-item {
@@ -1051,6 +1148,7 @@ button {
   /* Collaborators Grid */
   .collaborators-grid {
     grid-template-columns: repeat(2, 1fr) !important;
+    display: grid !important;
   }
 
   /* Input fields: 16px to prevent iOS auto-zoom */
@@ -1067,7 +1165,7 @@ button {
 
 @media (max-width: 480px) {
   .hero-bottom-bar {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 
   .hero-bottom-item {
