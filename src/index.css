@@ -5,6 +5,7 @@
   --bg-dark: #131110;
   --bg-light: #F7F5F0;
   --accent-gold: #C5A059;
+  --accent-cobalt: #3B82F6;
   --accent-terracotta: #C85A32;
   --accent-sage: #7D8F69;
   --accent-indigo: #2D3D4E;
@@ -13,7 +14,7 @@
   --color-bg: var(--bg-dark);
   --color-text: var(--bg-light);
   --color-accent: var(--accent-gold);
-  --color-border: rgba(247, 245, 240, 0.12);
+  --color-border: rgba(247, 245, 240, 0.16);
   
   /* Luxury High Fashion & Model Typography */
   --font-display: 'Syne', sans-serif;
@@ -123,9 +124,10 @@ p {
 }
 
 .text-outline {
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--color-text);
-  transition: -webkit-text-stroke var(--transition-medium);
+  color: var(--color-accent, #C5A059);
+  -webkit-text-stroke: 1.5px var(--color-accent, #C5A059);
+  text-shadow: 0 0 20px rgba(197, 160, 89, 0.35);
+  transition: all var(--transition-medium);
 }
 
 .text-accent {
@@ -268,22 +270,23 @@ button {
   align-items: center;
   justify-content: center;
   padding: 1.5rem 2.5rem;
-  background-color: var(--color-accent);
-  color: var(--bg-dark);
+  background-color: var(--color-accent, #C5A059);
+  color: #131110 !important;
   font-family: var(--font-display);
   font-size: clamp(1.1rem, 1.8vw, 1.5rem);
   font-weight: 800;
   text-transform: uppercase;
-  border: 1px solid var(--color-accent);
-  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  border: 1px solid var(--color-accent, #C5A059);
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
   width: 100%;
   text-align: center;
 }
 
 .btn-primary:hover {
   background-color: transparent;
-  color: var(--color-text);
-  border-color: var(--color-text);
+  color: var(--color-accent, #C5A059) !important;
+  border-color: var(--color-accent, #C5A059);
+  box-shadow: 0 0 20px rgba(197, 160, 89, 0.35);
 }
 
 .btn-secondary {
@@ -291,8 +294,8 @@ button {
   align-items: center;
   justify-content: center;
   padding: 1.5rem 2.5rem;
-  background-color: transparent;
-  color: var(--color-text);
+  background-color: rgba(247, 245, 240, 0.08);
+  color: var(--bg-light) !important;
   font-family: var(--font-display);
   font-size: clamp(1.1rem, 1.8vw, 1.5rem);
   font-weight: 800;
@@ -303,9 +306,10 @@ button {
 }
 
 .btn-secondary:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  background-color: rgba(197, 160, 89, 0.08);
+  border-color: var(--color-accent, #C5A059);
+  color: var(--color-accent, #C5A059) !important;
+  background-color: rgba(197, 160, 89, 0.16);
+  box-shadow: 0 0 16px rgba(197, 160, 89, 0.25);
 }
 
 /* Live Indicators & Badges */
@@ -369,8 +373,10 @@ button {
   height: 100%;
   z-index: 1;
   overflow: hidden;
+  background-color: var(--bg-dark);
 }
 
+/* Upscaled High-Def Hero Video */
 .hero-bg-video-element {
   position: absolute;
   top: 50%;
@@ -379,11 +385,17 @@ button {
   min-height: 100%;
   width: 100%;
   height: 100%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(1.06);
+  transform-origin: center center;
   object-fit: cover;
-  object-position: center 35%; /* Balanced sweet spot: frames head, dreadlocks, eyewear, torso, walk and poses */
+  object-position: center 32%; /* Framing head, dreadlocks, eyewear, posture, and silhouette */
   z-index: 1;
-  filter: brightness(0.92) contrast(1.12);
+  filter: brightness(0.96) contrast(1.15) saturate(1.08);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform, filter;
 }
 
 .hero-bg-overlay-gradient {
@@ -394,8 +406,8 @@ button {
   height: 100%;
   z-index: 2;
   background: 
-    linear-gradient(90deg, rgba(19, 17, 16, 0.92) 0%, rgba(19, 17, 16, 0.62) 45%, rgba(19, 17, 16, 0.2) 100%),
-    linear-gradient(180deg, rgba(19, 17, 16, 0.75) 0%, rgba(19, 17, 16, 0.05) 45%, rgba(19, 17, 16, 0.88) 100%);
+    linear-gradient(90deg, rgba(19, 17, 16, 0.86) 0%, rgba(19, 17, 16, 0.46) 48%, rgba(19, 17, 16, 0.14) 100%),
+    linear-gradient(180deg, rgba(19, 17, 16, 0.68) 0%, rgba(19, 17, 16, 0.0) 42%, rgba(19, 17, 16, 0.84) 100%);
   pointer-events: none;
 }
 
@@ -411,19 +423,21 @@ button {
 
 .hero-top-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  padding: 3.5rem 4rem 1.5rem 4rem;
+  padding: 2.5rem 4rem 1rem 4rem;
   flex-wrap: wrap;
   gap: 1.5rem;
 }
 
 .hero-center-row {
-  padding: 2rem 4rem 3rem 4rem;
-  max-width: 1050px;
+  padding: 3rem 4rem 4rem 4rem;
+  max-width: 1100px;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.25rem;
+  flex: 1;
+  justify-content: center;
 }
 
 .hero-bottom-bar {
@@ -474,6 +488,45 @@ button {
   padding: 0.45rem 0.85rem;
 }
 
+/* Audio Mute / Unmute Toggle Button */
+.video-mute-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  background: rgba(19, 17, 16, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.8rem;
+  padding: 0.45rem 0.95rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.video-mute-toggle-btn:hover {
+  background: var(--color-accent);
+  color: var(--bg-dark);
+  box-shadow: 0 0 14px rgba(197, 160, 89, 0.45);
+}
+
+.video-mute-toggle-btn.is-muted {
+  border-color: rgba(247, 245, 240, 0.35);
+  color: var(--bg-light);
+  background: rgba(19, 17, 16, 0.75);
+}
+
+.video-mute-toggle-btn.is-muted:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(19, 17, 16, 0.95);
+}
+
 .video-action-btn {
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -521,12 +574,12 @@ button {
   align-items: flex-end;
   gap: 2px;
   height: 10px;
-  margin-left: 4px;
+  margin-right: 2px;
 }
 
 .sound-bar {
   width: 2px;
-  background-color: var(--color-accent);
+  background-color: currentColor;
   animation: soundWave 0.8s ease-in-out infinite alternate;
 }
 

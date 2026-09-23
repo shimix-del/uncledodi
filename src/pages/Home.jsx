@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { projects } from '../data/projects';
 
 export default function Home({ onNavigate }) {
   const videoRef = useRef(null);
+  const [isMuted, setIsMuted] = useState(false);
 
   const handleCursorEnter = () => {
     const cursor = document.querySelector('.custom-cursor');
@@ -14,38 +15,64 @@ export default function Home({ onNavigate }) {
     if (cursor) cursor.classList.remove('hovering');
   };
 
-  // Video autoplay with sound: attempt unmuted playback; if browser blocks, fallback to muted and unmute on first user interaction
+  // Toggle video mute / unmute on user demand
+  const toggleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const nextMuted = !video.muted;
+    video.muted = nextMuted;
+    setIsMuted(nextMuted);
+
+    if (!nextMuted) {
+      video.play().catch(() => {});
+    }
+  };
+
+  // Video autoplay management & volume sync
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
+    const handleVolumeChange = () => {
+      setIsMuted(video.muted);
+    };
+    video.addEventListener('volumechange', handleVolumeChange);
+
+    // Attempt unmuted playback initially
     video.muted = false;
     const playPromise = video.play();
 
     if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // Browser prevented unmuted autoplay, play muted first
-        video.muted = true;
-        video.play().catch(() => {});
+      playPromise
+        .then(() => {
+          setIsMuted(false);
+        })
+        .catch(() => {
+          // Browser prevented unmuted autoplay; fallback to muted and mark state
+          video.muted = true;
+          setIsMuted(true);
+          video.play().catch(() => {});
 
-        // Unmute automatically on first user gesture
-        const unmuteOnUserGesture = () => {
-          if (video) {
-            video.muted = false;
-            video.play().catch(() => {});
-          }
-          window.removeEventListener('click', unmuteOnUserGesture);
-          window.removeEventListener('touchstart', unmuteOnUserGesture);
-          window.removeEventListener('scroll', unmuteOnUserGesture);
-          window.removeEventListener('keydown', unmuteOnUserGesture);
-        };
+          // Optional: unmute automatically on first user click/tap if user hasn't explicitly muted
+          const unmuteOnUserGesture = () => {
+            if (video && video.muted) {
+              video.muted = false;
+              setIsMuted(false);
+              video.play().catch(() => {});
+            }
+            window.removeEventListener('click', unmuteOnUserGesture);
+            window.removeEventListener('touchstart', unmuteOnUserGesture);
+          };
 
-        window.addEventListener('click', unmuteOnUserGesture, { once: true });
-        window.addEventListener('touchstart', unmuteOnUserGesture, { once: true });
-        window.addEventListener('scroll', unmuteOnUserGesture, { once: true });
-        window.addEventListener('keydown', unmuteOnUserGesture, { once: true });
-      });
+          window.addEventListener('click', unmuteOnUserGesture, { once: true });
+          window.addEventListener('touchstart', unmuteOnUserGesture, { once: true });
+        });
     }
+
+    return () => {
+      video.removeEventListener('volumechange', handleVolumeChange);
+    };
   }, []);
 
   return (
@@ -57,10 +84,10 @@ export default function Home({ onNavigate }) {
           <video
             ref={videoRef}
             src="./assets/hero_video.mp4"
-            poster="./assets/dodi_portrait.jpg"
             autoPlay
             loop
             playsInline
+            preload="auto"
             controlsList="nodownload nofullscreen noremoteplayback"
             disablePictureInPicture
             disableRemotePlayback
@@ -72,18 +99,44 @@ export default function Home({ onNavigate }) {
 
         {/* Foreground Content Layer */}
         <div className="hero-content-layer">
-          {/* Top Row: Meta Status & Link */}
-          <div className="hero-top-row">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
-              <span className="live-status-pill">
-                <span className="live-dot" /> LIVE COVER REEL
-              </span>
-              <span className="meta-label">
-                DODI TOM (UNCLE DODI) / HIGH FASHION MUSE & CREATIVE VISIONARY
-              </span>
-            </div>
+          {/* Top Row: Interactive Audio Controls & Instagram Link */}
+          <div className="hero-top-row" style={{ justifyContent: 'flex-end' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+              {/* Mute / Unmute Audio Toggle Button */}
+              <button
+                type="button"
+                onClick={toggleMute}
+                className={`video-mute-toggle-btn ${isMuted ? 'is-muted' : 'is-playing'}`}
+                title={isMuted ? "Click to Unmute Sound" : "Click to Mute Sound"}
+                aria-label={isMuted ? "Unmute video sound" : "Mute video sound"}
+                onMouseEnter={handleCursorEnter}
+                onMouseLeave={handleCursorLeave}
+              >
+                {isMuted ? (
+                  <>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <line x1="23" y1="9" x2="17" y2="15"></line>
+                      <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                    <span>SOUND OFF</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="sound-visualizer">
+                      <span className="sound-bar bar-1" />
+                      <span className="sound-bar bar-2" />
+                      <span className="sound-bar bar-3" />
+                    </span>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <span>SOUND ON</span>
+                  </>
+                )}
+              </button>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <a 
                 href="https://www.instagram.com/reel/DSJ1OfJjdqq/" 
                 target="_blank" 
@@ -98,11 +151,11 @@ export default function Home({ onNavigate }) {
             </div>
           </div>
 
-          {/* Center Main Headline & Call to Action */}
+          {/* Center Main Headline & Call to Action (Expanded to fill hero space) */}
           <div className="hero-center-row">
             <div>
-              <div style={{ display: 'inline-block', marginBottom: '0.75rem' }}>
-                <span style={{ fontSize: '0.95rem', fontWeight: 800, letterSpacing: '0.2em', color: 'var(--color-accent)', textTransform: 'uppercase' }}>
+              <div style={{ display: 'inline-block', marginBottom: '1.25rem' }}>
+                <span style={{ fontSize: '1.05rem', fontWeight: 800, letterSpacing: '0.22em', color: 'var(--color-accent, #C5A059)', textTransform: 'uppercase' }}>
                   ⚡ NORMAL IS BORING ⚡
                 </span>
               </div>
@@ -112,7 +165,7 @@ export default function Home({ onNavigate }) {
               </h1>
             </div>
 
-            <p className="lead-text" style={{ maxWidth: '720px', opacity: 0.95, textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
+            <p className="lead-text" style={{ maxWidth: '780px', opacity: 0.95, textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
               High-fashion & commercial modeling, androgynous runway presence, and eclectic upcycled sartorial styling. Brightening every space in this section of the Milky Way.
             </p>
 
@@ -390,20 +443,16 @@ export default function Home({ onNavigate }) {
       </section>
 
       {/* Marquee Section */}
-      <section className="marquee-container border-bottom" style={{ background: 'var(--color-accent)', color: 'var(--bg-dark)', transition: 'background-color var(--transition-slow), color var(--transition-slow)' }}>
+      <section className="marquee-container border-bottom" style={{ background: 'var(--color-accent, #C5A059)', color: '#131110', transition: 'background-color var(--transition-slow), color var(--transition-slow)' }}>
         <div className="marquee-content">
-          <div className="marquee-text">EDITORIAL MODELING ⚡</div>
-          <div className="marquee-text">SARTORIAL STYLING ⚡</div>
-          <div className="marquee-text">MALINDI FASHION ⚡</div>
-          <div className="marquee-text">THE LIKIZO COLLECTION ⚡</div>
-          <div className="marquee-text">TAO EXODUS ⚡</div>
-          <div className="marquee-text">POP LEATHER & SUNSET ⚡</div>
-          <div className="marquee-text">EDITORIAL MODELING ⚡</div>
-          <div className="marquee-text">SARTORIAL STYLING ⚡</div>
-          <div className="marquee-text">MALINDI FASHION ⚡</div>
-          <div className="marquee-text">THE LIKIZO COLLECTION ⚡</div>
-          <div className="marquee-text">TAO EXODUS ⚡</div>
-          <div className="marquee-text">POP LEATHER & SUNSET ⚡</div>
+          <div className="marquee-text">NORMAL IS BORING ⚡</div>
+          <div className="marquee-text">NORMAL IS BORING ⚡</div>
+          <div className="marquee-text">NORMAL IS BORING ⚡</div>
+          <div className="marquee-text">NORMAL IS BORING ⚡</div>
+          <div className="marquee-text">NORMAL IS BORING ⚡</div>
+          <div className="marquee-text">NORMAL IS BORING ⚡</div>
+          <div className="marquee-text">NORMAL IS BORING ⚡</div>
+          <div className="marquee-text">NORMAL IS BORING ⚡</div>
         </div>
       </section>
 

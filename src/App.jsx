@@ -64,8 +64,8 @@ export default function App() {
         setRoute(path);
         setProjectId(null);
         
-        // Reset global accent to Cobalt on default pages
-        document.documentElement.style.setProperty('--color-accent', 'var(--accent-cobalt)');
+        // Reset global accent to Gold on default pages
+        document.documentElement.style.setProperty('--color-accent', 'var(--accent-gold)');
       }
     };
 

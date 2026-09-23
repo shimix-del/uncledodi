@@ -55,8 +55,8 @@ export const projects = [
     comment: "“Uncle Dodi's poised stance against the Indian Ocean shoreline captured the essence of contemporary coastal haute couture.” — Malindi Fashion Producer",
     accentColor: "#C85A32", // Terracotta Rust
     textColor: "#F7F5F0",
-    heroImage: "./assets/malindi_runway_beach.jpg",
-    processImage: "./assets/malindi_coastal_duo.jpg",
+    heroImage: "./assets/malindi_resort_group.jpg",
+    processImage: "./assets/coastal_heritage_duo.jpg",
     instagramLink: "https://www.instagram.com/p/Cyxsyv6N9Z8/?img_index=5",
     challenge: "Showcasing high-end East African resort wear on open sandy coastlines while balancing heritage Swahili drapes and avant-garde woven rope accessories.",
     solution: "Uncle Dodi anchored the beachfront runway presentation in flowing natural linen trousers and a sculptural rope harness, followed by a coastal duo editorial wearing a geometric blue and turquoise heritage button-up.",
@@ -68,6 +68,76 @@ export const projects = [
         "Coastal Lookbook Editorial Campaign",
         "Instagram Fashion Week Feature Coverage",
         "Heritage Textile Print Highlight Stills"
+      ]
+    }
+  },
+  {
+    id: "ancestral-banyan-roots",
+    title: "Ancestral Roots & Gilded Kimono",
+    client: "Haute Couture Editorial & Heritage Pavilion",
+    deliverable: "Lead High-Fashion Muse & Sartorial Stylist",
+    service: "Editorial Modeling & Styling",
+    year: "2026",
+    timeline: "Editorial Campaign",
+    venue: "Sacred Banyan Canopy & Gilded Atelier, Kenya",
+    date: "January 2026",
+    theme: "Black Belted Kimono, Fur Stole Textures & Gilded Throne Composition",
+    features: [
+      "Structured Black Belted Kimono Shirt & Chunky Platform Boots",
+      "Gold-Finished Throne Pairing with Artisanal Fur Stole",
+      "Angular Eyewear & Vintage Wine Glass Choreography",
+      "Intricate Dreadlocks & High-Contrast Portraiture"
+    ],
+    comment: "“Uncle Dodi transforms every frame into living mythology. The balance between ancient roots, gilded luxury, and contemporary androgyny is unforgettable.” — Creative Arts Director",
+    accentColor: "#C5A059", // Luxury Gold
+    textColor: "#131110",
+    heroImage: "./assets/banyan_roots_editorial.jpg",
+    processImage: "./assets/sunset_sunglasses_duo.jpg",
+    instagramLink: "https://www.instagram.com/uncle_dodi",
+    challenge: "Merging classical royalty, botanical banyan architecture, and sleek urban kimono silhouettes into a harmonious fashion narrative.",
+    solution: "Framed against towering aerial banyan roots, Dodi anchored the composition in an all-black structured belted shirt and angular shades, holding a poised stance beside a gilded matriarchal throne.",
+    process: {
+      brief: "Juxtapose natural raw banyan tree root textures with high-polish gilded furniture and minimalist monochrome silhouettes.",
+      sketchesDescription: "We contrasted the golden warmth of the fur stole and throne with deep obsidian fabrics and sharp eyewear.",
+      deliverables: [
+        "Banyan Roots High-Fashion Editorial Spread",
+        "Fine Art Print Portfolio Features",
+        "Social Launch Stills & Movement Reels"
+      ]
+    }
+  },
+  {
+    id: "pastel-utility-cargo",
+    title: "Pastel Utility & Monochromatic Edge",
+    client: "Contemporary Streetwear & Editorial Studio",
+    deliverable: "Styling Direction & Lead Muse",
+    service: "Editorial Modeling & Styling",
+    year: "2026",
+    timeline: "Studio Showcase",
+    venue: "Urban Architectural Studio & Living Gallery, Mombasa",
+    date: "February 2026",
+    theme: "Pastel Pink Oversized Tee, Multi-Pocket Cargo Trousers & Tinted Glasses",
+    features: [
+      "Monochromatic Pastel Pink Boxy Tee & Multi-Pocket Utility Cargos",
+      "Signature Flowing Dreadlocks & Metallic Wrist Accents",
+      "Retro Oval Tinted Eyewear & Clean White Kicks",
+      "Playful Subversion of Streetwear Color Codes"
+    ],
+    comment: "“Normal is boring. Dodi proves that pastel monochrome carries just as much raw, commanding presence as high-contrast leather.” — Studio Director",
+    accentColor: "#E11D48", // Rose Red
+    textColor: "#F7F5F0",
+    heroImage: "./assets/pink_sartorial_cargo.jpg",
+    processImage: "./assets/pop_leather_trench.jpg",
+    instagramLink: "https://www.instagram.com/uncle_dodi",
+    challenge: "Redefining utilitarian streetwear through soft pastel palettes and androgynous relaxed tailoring.",
+    solution: "Dodi combined a crisp pastel pink tee with loose multi-pocket cargo trousers, vintage round eyewear, and signature braided locks.",
+    process: {
+      brief: "Explore the intersection of functional workwear cargo silhouettes with soft chromatic palettes.",
+      sketchesDescription: "We balanced the tactile weight of multiple cargo pockets with airy cotton jersey fabrics.",
+      deliverables: [
+        "Pastel Utility Studio Editorial Lookbook",
+        "Social Portfolio Editorial Series",
+        "Contemporary Streetwear Showcase Feature"
       ]
     }
   },
